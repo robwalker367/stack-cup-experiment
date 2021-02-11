@@ -1,0 +1,3 @@
+class StackCupGame
+end
+
