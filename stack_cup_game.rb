@@ -22,7 +22,7 @@ class StackCupGame
     cups.players_with_cups.each do |player|
       is_success = player.made_shot?
       if is_success
-        cups.pass_cup(player, player.right_player)
+        cups.pass_cup_between(player, player.right_player)
       end
     end
   end
@@ -33,6 +33,7 @@ class Cups
 
   def initialize(total_cups:)
     @total_cups = total_cups
+    @players_with_cups = []
   end
 
   def distribute_cups(player_circle)
@@ -42,12 +43,12 @@ class Cups
     end
   end
 
-  def pass_cup(player_with_cup, player_to_pass_to)
+  def pass_cup_between(player_with_cup, player_to_pass_to)
     players_with_cups[players_with_cups.index(player_with_cup)] = player_to_pass_to
   end
 
   def cup_was_stacked?
-    players_with_cups.size < total_cups
+    players_with_cups.uniq.size < total_cups
   end
 end
 
@@ -62,7 +63,7 @@ class Player
   end
 
   def made_shot?
-    (rand % shot_probability) < shot_probability
+    rand < shot_probability
   end
 end
 
@@ -125,10 +126,9 @@ player_circle = PlayerCircle.new(
     players_probability: 0.5
   )
 )
+cups = Cups.new(total_cups: 2)
 
-game = StackCupGame.new(
-  player_circle: player_circle,
-  cups: Cups.new(total_cups: 2)
-)
+game = StackCupGame.new(player_circle: player_circle, cups: cups)
+
 
 puts game.rounds_until_first_stack
