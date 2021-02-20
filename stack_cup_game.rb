@@ -1,5 +1,6 @@
 require 'set'
 
+# TODO: Extract an experiment class from the game class
 class StackCupGame
   attr_accessor :player_circle, :cups
 
@@ -74,10 +75,11 @@ class Player
   end
 
   def made_shot?
-    rand < shot_probability # This could be extracted using the strategy pattern
+    rand < shot_probability # TODO: This could be extracted using the strategy pattern
   end
 end
 
+# TODO: Might not be the best class for this
 class PlayerCircle
   attr_accessor :total_players, :players
 
