@@ -21,13 +21,19 @@ class StackCupGame
   def do_round
     cups.players_with_cups.each do |player|
       is_success = player.made_shot?
-      if is_success
+      if player.is_first_shot && is_success
+        next_player = cups.next_player_with_cup(player)
+        cups.pass_cup_between(player, next_player.left_player)
+      elsif is_success
         cups.pass_cup_between(player, player.right_player)
+      else
+        player.is_first_shot = false
       end
     end
   end
 end
 
+# TODO: refactor this class to follow SRP
 class Cups
   attr_accessor :players_with_cups, :total_cups
 
@@ -47,23 +53,28 @@ class Cups
     players_with_cups[players_with_cups.index(player_with_cup)] = player_to_pass_to
   end
 
+  def next_player_with_cup(player)
+    players_with_cups[(players_with_cups.index(player) + 1) % players_with_cups.size]
+  end
+
   def cup_was_stacked?
     players_with_cups.uniq.size < total_cups
   end
 end
 
 class Player
-  attr_accessor :shot_probability, :right_player, :left_player
+  attr_accessor :shot_probability, :is_first_shot, :right_player, :left_player
 
   def initialize(shot_probability:)
     @shot_probability = shot_probability
     @right_player = nil
     @left_player = nil
     @holds_cup = false
+    @is_first_shot = true
   end
 
   def made_shot?
-    rand < shot_probability
+    rand < shot_probability # This could be extracted using the strategy pattern
   end
 end
 
