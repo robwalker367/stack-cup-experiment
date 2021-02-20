@@ -24,7 +24,7 @@ I make the following assumptions about the game:
 
 ### Results
 
-I'll have more time to test (and refactor) this soon, but I have the following results so far:
+I have the following results so far:
 
 | expected rounds | total players (>3) | player skill (0 < p < 1) |
 |-----------------|--------------------|--------------------------|
