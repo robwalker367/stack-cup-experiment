@@ -131,17 +131,47 @@ class Util
       current_node = current_node.right_player
     end
   end
+
+  def self.avg_rounds_of_x_games(game_factory:, x:)
+    running_sum = 0
+    x.times do |i|
+      game = game_factory.new_game
+      running_sum += game.rounds_until_first_stack
+    end
+    running_sum / x
+  end
 end
 
-player_circle = PlayerCircle.new(
-  players: PlayerFactory.create_players(
+class GameFactory
+  attr_accessor :players_skill, :total_players, :total_cups
+
+  def initialize(players_skill:, total_players:, total_cups:)
+    @players_skill = players_skill
+    @total_players = total_players
+    @total_cups = total_cups
+  end
+
+  def new_game
+    player_circle = PlayerCircle.new(
+      players: PlayerFactory.create_players(
+        total_players: 6,
+        players_probability: 0.5
+      )
+    )
+    cups = Cups.new(total_cups: 2)
+    
+    StackCupGame.new(player_circle: player_circle, cups: cups)
+  end
+end
+
+
+avg_rounds = Util.avg_rounds_of_x_games(
+  game_factory: GameFactory.new(
+    players_skill: 0.5,
     total_players: 6,
-    players_probability: 0.5
-  )
+    total_cups: 2
+  ), 
+  x: 1000
 )
-cups = Cups.new(total_cups: 2)
 
-game = StackCupGame.new(player_circle: player_circle, cups: cups)
-
-
-puts game.rounds_until_first_stack
+puts "Average rounds: " + avg_rounds.to_s
