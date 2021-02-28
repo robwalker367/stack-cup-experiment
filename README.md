@@ -4,7 +4,7 @@ Simulates stack cup for finding the expected number of round until someone drink
 
 ### Stack cup rules
 
-See [here](https://letmegooglethat.com/?q=Stack+cup+rules) for the full rules of stack cup. A brief summary follows.
+See [here](https://drinkinggamezone.com/drinking-games/team-stack-cup/) for the full rules of stack cup. A brief summary follows.
 
 _n_ players stand in a circle around a table. _c_ cups with ping pong balls (the ping pong balls always stay with the cups) are distributed as equally as possible among the players (usually _c_ is 2, but for large games can be 3). A game is won by a player "stacking" one of the cups into another players cup. The game is divided into rounds, and each round each player with a cup tries to bounce their ping pong ball off of the table and into their cup. If the ball lands in their cup, three things can happen:
 1. If the player-who-made-the-shot is to the left of the player who has another cup, then the player-who-made-the-shot can stack their cup in the cup of the player to their right. The game ends.
