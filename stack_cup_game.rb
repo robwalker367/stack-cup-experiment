@@ -27,6 +27,7 @@ class StackCupGame
         cups.pass_cup_between(player, next_player.left_player)
       elsif is_success
         cups.pass_cup_between(player, player.right_player)
+        player.is_first_shot = true
       else
         player.is_first_shot = false
       end
@@ -59,7 +60,7 @@ class Cups
   end
 
   def cup_was_stacked?
-    players_with_cups.uniq.size < total_cups
+    players_with_cups.uniq.size < total_cups # TODO: This is janky
   end
 end
 
@@ -171,7 +172,7 @@ avg_rounds = Util.avg_rounds_of_x_games(
     total_players: 6,
     total_cups: 2
   ), 
-  x: 1000
+  x: 10000
 )
 
 puts "Average rounds: " + avg_rounds.to_s
