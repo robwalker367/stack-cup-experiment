@@ -21,7 +21,7 @@ class StackCupGame
 
   def do_round
     cups.players_with_cups.each do |player|
-      is_success = player.made_shot?
+      is_success = player.take_shot
       if player.is_first_shot && is_success
         next_player = cups.next_player_with_cup(player)
         cups.pass_cup_between(player, next_player.left_player)
@@ -75,7 +75,7 @@ class Player
     @is_first_shot = true
   end
 
-  def made_shot?
+  def take_shot
     rand < shot_probability # TODO: This could be extracted using the strategy pattern
   end
 end
