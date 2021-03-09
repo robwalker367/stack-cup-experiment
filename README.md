@@ -28,7 +28,7 @@ I have the following results so far:
 
 | expected rounds | total players (>3) | player skill (0 < p < 1) |
 |-----------------|--------------------|--------------------------|
-| 11              | 6                  | 0.5                      |
+| 24              | 6                  | 0.5                      |
 
 ### A minor note
 
