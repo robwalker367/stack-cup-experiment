@@ -26,9 +26,14 @@ I make the following assumptions about the game:
 
 I have the following results so far:
 
-| expected rounds | total players (>3) | player skill (0 < p < 1) |
-|-----------------|--------------------|--------------------------|
-| 24              | 6                  | 0.5                      |
+| total players (>2) | player skill (0 < p < 1) | expected rounds |
+|--------------------|--------------------------|-----------------|
+| 3                  | 0.5                      | 15.977          |
+| 4                  | 0.5                      | 23.760          |
+| 5                  | 0.5                      | 24.937          |
+| 6                  | 0.6                      | 25.324          |
+| 7                  | 0.5                      | 25.438          |
+| 8                  | 0.5                      | 25.504          |
 
 ### A minor note
 
