@@ -19,10 +19,13 @@ class StackCupGame
     round_count
   end
 
+  private
+
   def do_round
     cups.players_with_cups.each do |player|
+      is_first_shot = player.is_first_shot
       is_success = player.take_shot
-      if player.is_first_shot && is_success
+      if is_first_shot && is_success
         next_player = cups.next_player_with_cup(player)
         cups.pass_cup_between(player, next_player.left_player)
       elsif is_success
@@ -139,7 +142,7 @@ class Util
       game = game_factory.new_game
       running_sum += game.rounds_until_first_stack
     end
-    running_sum / x
+    running_sum.to_f / x
   end
 end
 
@@ -155,11 +158,11 @@ class GameFactory
   def new_game
     player_circle = PlayerCircle.new(
       players: PlayerFactory.create_players(
-        total_players: 6,
-        players_probability: 0.5
+        total_players: total_players,
+        players_probability: players_skill
       )
     )
-    cups = Cups.new(total_cups: 2)
+    cups = Cups.new(total_cups: total_cups)
     
     StackCupGame.new(player_circle: player_circle, cups: cups)
   end
@@ -169,10 +172,10 @@ end
 avg_rounds = Util.avg_rounds_of_x_games(
   game_factory: GameFactory.new(
     players_skill: 0.5,
-    total_players: 6,
+    total_players: 7,
     total_cups: 2
   ), 
-  x: 10000
+  x: 100000
 )
 
 puts "Average rounds: " + avg_rounds.to_s
