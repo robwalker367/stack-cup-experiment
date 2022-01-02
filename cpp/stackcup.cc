@@ -9,11 +9,12 @@
 #include <cmath>
 #include <vector>
 #include <thread>
+#include <atomic>
 #include <chrono>
 
 stack_table* main_table;
 
-static long nrunning = 0;
+static std::atomic<long> nrunning = 0;
 
 static unsigned long delay;
 
@@ -21,20 +22,9 @@ void cup_thread(stack_cup* c) {
   ++nrunning;
 
   while (true) {
-    int mval = c->move();
-    if (mval > 0) {
-      // Cup successfully moved; wait `delay` to move it again
-      if (delay > 0) {
-        usleep(delay);
-      }
-    } else if (mval < 0) {
-      // Cup destroyed
-      break;
-    }
+    c->move();
+    usleep(delay);
   }
-
-  delete c;
-  --nrunning;
 }
 
 
@@ -108,8 +98,9 @@ int main(int argc, char** argv) {
   assert(player_interval >= 1.0);
   std::vector<stack_cup*> cups;
   for (int i = 0; i < ncups; ++i) {
-    stack_cup* c = new stack_cup(table);
-    table.players[std::ceil(current_player)].cup = c;
+    int position = std::ceil(current_player);
+    stack_cup* c = new stack_cup(table, position);
+    table.players[position].cup = c;
     cups.push_back(c);
     current_player += player_interval;
   }
@@ -143,16 +134,16 @@ void print_handler(int) {
     int half_nplayers = (nplayers - 1) / 2;
     for (int i = 0, n = nplayers; i < n; ++i) {
       // Get player
-      int pos = (i <= half_nplayers ? i : nplayers - i + half_nplayers);
+      int pos = (i <= half_nplayers ? i : nplayers - (i - half_nplayers));
       stack_player& p = main_table->players[pos];
 
       if (auto c = p.cup) {
         // Print cup
-        int color = (reinterpret_cast<uintptr_t>(c) / 131) % 6;
+        int color = (reinterpret_cast<uintptr_t>(c) / 13) % 6;
         if (is_tty) {
-          sp.snprintf("\x1B[%dmC\x1B[m ", 31 + color);
+          sp.snprintf("\x1B[%dm%d\x1B[m ", 31 + color, c->stacks);
         } else {
-          sp << "C ";
+          sp << (long) c->stacks << ' ';
         }
       } else {
         // Print player
