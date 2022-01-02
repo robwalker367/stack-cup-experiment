@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
   int nplayers = 6, ncups = 2, nmiddles = 10;
   long print_interval = 0;
   int ch;
-  while ((ch = getopt(argc, argv, "P:p:c:m")) != -1) {
+  while ((ch = getopt(argc, argv, "P:p:c:m:d:")) != -1) {
     if (ch == 'p' && is_integer_string(optarg)) {
       nplayers = strtol(optarg, nullptr, 10);
     } else if (ch == 'c' && is_integer_string(optarg)) {
@@ -104,12 +104,12 @@ int main(int argc, char** argv) {
   main_table = &table;
 
   // Place cups
-  double current_player = 0, player_interval = (double) nplayers / ncups;
+  double current_player = 0, player_interval = (double)(nplayers - 1) / ncups;
   assert(player_interval >= 1.0);
   std::vector<stack_cup*> cups;
   for (int i = 0; i < ncups; ++i) {
     stack_cup* c = new stack_cup(table);
-    table.players[std::floor(current_player)].cup = c;
+    table.players[std::ceil(current_player)].cup = c;
     cups.push_back(c);
     current_player += player_interval;
   }
@@ -166,9 +166,9 @@ void print_handler(int) {
           sp << ' ';
         }
         if (is_tty) {
-          sp.snprintf("\x1B[97;104m%d\x1B[m ", main_table->middle_cups);
+          sp.snprintf("\x1B[97;104m%d\x1B[m", main_table->middle_cups);
         } else {
-          sp << (char)((char) main_table->middle_cups + '0');
+          sp << (long) main_table->middle_cups;
         }
         sp << '\n' << spflush(STDOUT_FILENO);
       }
