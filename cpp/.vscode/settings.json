@@ -1,9 +1,0 @@
-{
-  "files.associations": {
-    "*.ejs": "html",
-    "*.master": "html",
-    "*.asax": "html",
-    "vector": "cpp",
-    "thread": "cpp"
-  }
-}
